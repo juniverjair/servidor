@@ -40,12 +40,16 @@
           <td>{{ llave.fecha_expiracion }}</td>
           <td>{{ llave.estado }}</td>
           <td>
-            <form action="/llaves/revocar" method="POST" style="margin: 0px;">
-              {% csrf_token %}
-              <input type="hidden" name="DISPOSITIVO_ID" value="{{ DISPOSITIVO.id }}">
-              <input type="hidden" name="LLAVE_ID" value="{{ llave.id }}">
-              <button class="btn btn-block btn-danger" style="width: 50px;"><span data-feather="trash-2"></span></button>
-            </form>
+            {% if llave.estado == "Revocada" or llave.estado == "Expirada" %}
+              <button type="button" class="btn btn-block btn-danger" style="width: 50px;" disabled><span data-feather="trash-2"></span></button>
+            {% else %}
+              <form action="/llaves/revocar" method="POST" style="margin: 0px;">
+                {% csrf_token %}
+                <input type="hidden" name="DISPOSITIVO_ID" value="{{ DISPOSITIVO.id }}">
+                <input type="hidden" name="LLAVE_ID" value="{{ llave.id }}">
+                <button class="btn btn-block btn-danger" style="width: 50px;"><span data-feather="trash-2"></span></button>
+              </form>
+            {% endif %}
           </td>
         </tr>
         {% endfor %}
